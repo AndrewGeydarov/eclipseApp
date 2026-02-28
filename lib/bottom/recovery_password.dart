@@ -52,7 +52,6 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                 cursorColor: Colors.white,
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                  
                   filled: true,
                   hintText: 'eclipse@mail.ru',
                   hintStyle: TextStyle(color: Colors.white70),
@@ -89,8 +88,33 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                   ),
                 ),
                 onPressed: () async {
-                  if(emailController.text.isNotEmpty){
+                  if (emailController.text.isNotEmpty) {
                     await authService.recoveryPassword(emailController.text);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          "Сообщение отправлено на почту",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight(700),
+                          ),
+                        ),
+                        backgroundColor: Color.fromARGB(156, 27, 12, 34),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          "Заполните поля",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight(700),
+                          ),
+                        ),
+                        backgroundColor: Color.fromARGB(156, 27, 12, 34),
+                      ),
+                    );
                   }
                 },
                 child: Text(
@@ -107,10 +131,7 @@ class _RecoveryPasswordPageState extends State<RecoveryPasswordPage> {
                   onPressed: () {
                     Navigator.popAndPushNamed(context, '/home');
                   },
-                  child: Text(
-                    "Вернуться", 
-                    style: TextStyle(fontSize: 15)
-                  ),
+                  child: Text("Вернуться", style: TextStyle(fontSize: 15)),
                 ),
               ],
             ),

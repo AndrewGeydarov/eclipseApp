@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:eclipse_app/database/storage/storage.dart';
+import 'package:eclipse_app/database/users/user_table.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -21,8 +22,9 @@ class _BottomProfilePageState extends State<BottomProfilePage> {
   String? url;
   final user_id = Supabase.instance.client.auth.currentUser!.id;
   dynamic docs;
-  TextEditingController fullNameController = TextEditingController();
+  TextEditingController fullnameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  UserTable userTable = UserTable();
 
   Future<void> getUserById() async {
     try {
@@ -34,6 +36,8 @@ class _BottomProfilePageState extends State<BottomProfilePage> {
       setState(() {
         docs = user;
       });
+      emailController.text = user['email'].toString();
+      fullnameController.text = user['full_name'].toString();
     } catch (e) {
       return;
     }
@@ -71,8 +75,6 @@ class _BottomProfilePageState extends State<BottomProfilePage> {
   @override
   void initState() {
     getUserById();
-    fullNameController.text = docs('full_name');
-    emailController.text = docs('email');
     super.initState();
   }
 
@@ -88,20 +90,15 @@ class _BottomProfilePageState extends State<BottomProfilePage> {
                 height: MediaQuery.of(context).size.height * 0.04,
                 alignment: Alignment.centerRight,
                 width: MediaQuery.of(context).size.width * 0.5,
-                child: IconButton(
-                  onPressed: () async {
-                    await selectedImageGallery();
-                  },
-                  icon: Icon(Icons.edit),
-                ),
+                child: IconButton(onPressed: () async {
+                  await selectedImageGallery();
+                }, icon: Icon(Icons.edit)),
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.2,
                 width: MediaQuery.of(context).size.width * 0.5,
                 child: CircleAvatar(
-                  // backgroundImage: _selectFile != null
-                  //     ? AssetImage(_file!.toString())
-                  //     : NetworkImage(docs['avatar']),
+                  backgroundImage: NetworkImage(docs['avatar']),
                 ),
               ),
               Container(
@@ -113,7 +110,8 @@ class _BottomProfilePageState extends State<BottomProfilePage> {
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,
                 child: TextField(
-                  controller: fullNameController,
+                  controller: fullnameController,
+                  // obscureText: true,
                   cursorColor: Colors.white,
                   decoration: InputDecoration(
                     filled: true,
@@ -139,6 +137,7 @@ class _BottomProfilePageState extends State<BottomProfilePage> {
                 width: MediaQuery.of(context).size.width * 0.9,
                 child: TextField(
                   controller: emailController,
+                  // obscureText: true,
                   cursorColor: Colors.white,
                   decoration: InputDecoration(
                     filled: true,
@@ -159,12 +158,10 @@ class _BottomProfilePageState extends State<BottomProfilePage> {
               Container(
                 alignment: Alignment.centerRight,
                 width: MediaQuery.of(context).size.width * 0.9,
-                child: InkWell(
-                  child: Text('Сменить пароль'),
-                  onTap: () {
-                    Navigator.popAndPushNamed(context, '/recovery');
-                  },
-                ),
+                child: InkWell(child: Text('Сменить пароль'), onTap: (
+                ) {
+                  Navigator.popAndPushNamed(context, '/recovery');
+                }),
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               SizedBox(
@@ -179,7 +176,6 @@ class _BottomProfilePageState extends State<BottomProfilePage> {
                     ),
                   ),
                   onPressed: () async {
-                    await uploadImage();
                     showDialog(
                       context: context,
                       builder: (context) => Center(
@@ -189,6 +185,15 @@ class _BottomProfilePageState extends State<BottomProfilePage> {
                       ),
                     );
                     await Future.delayed(Duration(seconds: 3));
+                    await downloadUrl();
+                    await userTable.updateImage(url!, user_id);
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Успешное сохранение!"),
+                        backgroundColor: Color.fromARGB(156, 27, 12, 34),
+                      ),
+                    );
                   },
                   child: Text("Сохранить"),
                 ),

@@ -7,10 +7,13 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class StorageCloud {
   final Supabase supabase = Supabase.instance;
 
-  Future<void> addImageCloud(XFile image) async{
+  Future<void> addImageCloud(XFile imageFile) async {
     try {
-      final fileName = path.basename(image.path);
-      await supabase.client.storage.from('EclipseBucket').upload(fileName, File(image.path)).then((value) => print("Complited"));
+      final fileName = path.basename(imageFile.path);
+      await supabase.client.storage
+          .from('storage')
+          .upload(fileName, File(imageFile.path))
+          .then((value) => print("Completed"));
     } catch (e) {
       return;
     }

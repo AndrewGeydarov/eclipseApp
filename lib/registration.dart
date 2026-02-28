@@ -1,9 +1,6 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:eclipse_app/database/authorize.dart';
 import 'package:eclipse_app/database/users/user_table.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RegistrationPage extends StatefulWidget {
@@ -14,13 +11,13 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
-  AuthService authService = AuthService();
-  UserTable userTable = UserTable();
   String? _selectedGender;
   TextEditingController birthDateController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
   TextEditingController fullnameController = TextEditingController();
+  AuthService authService = AuthService();
+  UserTable userTable = UserTable();
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +43,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
               SizedBox(height: MediaQuery.of(context).size.height * 0.05),
               Image.asset('images/logo.png'),
               SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+
               Container(
                 width: MediaQuery.of(context).size.width * 0.9,
                 alignment: Alignment.centerLeft,
@@ -81,7 +79,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   ),
                 ),
               ),
+
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+
               Container(
                 width: MediaQuery.of(context).size.width * 0.9,
                 alignment: Alignment.centerLeft,
@@ -118,7 +118,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   ),
                 ),
               ),
+
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+
               Container(
                 width: MediaQuery.of(context).size.width * 0.9,
                 alignment: Alignment.centerLeft,
@@ -154,7 +156,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   ),
                 ),
               ),
+
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -200,7 +204,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       ),
                     ],
                   ),
+
                   SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -268,7 +274,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   ),
                 ],
               ),
+
               SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.8,
                 child: ElevatedButton(
@@ -303,34 +311,29 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           fullnameController.text,
                           emailController.text,
                           passController.text,
-                          _selectedGender.toString(),
+                          _selectedGender!,
                           birthDateController.text,
-                          ''
+                          '',
                         );
-                          final prefs = await SharedPreferences.getInstance();
-                          await prefs.setBool('isLoggedIn', true);
+
+                        final prefs = await SharedPreferences.getInstance();
+                        await prefs.setBool('isLoggedIn', true);
                         Navigator.popAndPushNamed(context, '/');
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text("Заполните поля."),
+                            content: Text(
+                              "Заполните поля",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight(700),
+                              ),
+                            ),
                             backgroundColor: Color.fromARGB(156, 27, 12, 34),
                           ),
                         );
                       }
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          
-                          content: Text(
-                            "Заполните поля.",
-                            style: TextStyle(color: Colors.white,
-                            fontWeight: FontWeight(700)),
-                          ),
-                          backgroundColor: Color.fromARGB(156, 27, 12, 34),
-                        ),
-                      );
-                    }
+                    } else {}
                   },
                   child: Text(
                     "Зарегистрироваться",
@@ -338,7 +341,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   ),
                 ),
               ),
+
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
