@@ -111,7 +111,7 @@ class _AuthPageState extends State<AuthPage> {
                 onPressed: () async {
                   if (emailController.text.isNotEmpty &&
                       passController.text.isNotEmpty) {
-                    var user = authService.signIn(
+                    var user = await authService.signIn(
                       emailController.text,
                       passController.text,
                     );
@@ -122,7 +122,13 @@ class _AuthPageState extends State<AuthPage> {
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text("Пользователь не найден."),
+                          content: Text(
+                            "Пользователь не найден.",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight(700),
+                            ),
+                          ),
                           backgroundColor: Color.fromARGB(156, 27, 12, 34),
                         ),
                       );
@@ -132,7 +138,10 @@ class _AuthPageState extends State<AuthPage> {
                       const SnackBar(
                         content: Text(
                           "Заполните поля.",
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight(700)),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight(700),
+                          ),
                         ),
                         backgroundColor: Color.fromARGB(156, 27, 12, 34),
                       ),
