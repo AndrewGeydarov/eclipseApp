@@ -184,6 +184,7 @@ class _BottomProfilePageState extends State<BottomProfilePage> {
                         ),
                       ),
                     );
+                    await storageCloud.addImageCloud(_file!);
                     await Future.delayed(Duration(seconds: 3));
                     await downloadUrl();
                     await userTable.updateImage(url!, user_id);

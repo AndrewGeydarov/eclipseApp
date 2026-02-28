@@ -11,7 +11,7 @@ class StorageCloud {
     try {
       final fileName = path.basename(imageFile.path);
       await supabase.client.storage
-          .from('storage')
+          .from('EclipseBucket')
           .upload(fileName, File(imageFile.path))
           .then((value) => print("Completed"));
     } catch (e) {

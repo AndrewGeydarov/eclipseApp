@@ -18,7 +18,7 @@ class UserTable {
         'password': password,
         'birth_date': date,
         'gender': gender,
-        'avatar': '',
+        'avatar': 'https://kpvbppodktqilevinrki.supabase.co/storage/v1/object/public/EclipseBucket/default-avatar.jpeg',
       });
 
       print('ДОБАВЛЕН ПОЛЬЗОВАТЕЛЬ'); 
