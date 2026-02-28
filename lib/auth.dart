@@ -1,5 +1,4 @@
 // ignore_for_file: unnecessary_null_comparison, dead_code
-
 import 'package:eclipse_app/database/authorize.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -116,7 +115,6 @@ class _AuthPageState extends State<AuthPage> {
                       emailController.text,
                       passController.text,
                     );
-
                     if (user != null) {
                       final prefs = await SharedPreferences.getInstance();
                       await prefs.setBool('isLoggedIn', true);
@@ -132,7 +130,10 @@ class _AuthPageState extends State<AuthPage> {
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text("Заполните поля."),
+                        content: Text(
+                          "Заполните поля.",
+                          style: TextStyle(color: Colors.white, fontWeight: FontWeight(700)),
+                        ),
                         backgroundColor: Color.fromARGB(156, 27, 12, 34),
                       ),
                     );

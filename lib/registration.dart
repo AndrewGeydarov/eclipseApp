@@ -3,6 +3,7 @@
 import 'package:eclipse_app/database/authorize.dart';
 import 'package:eclipse_app/database/users/user_table.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RegistrationPage extends StatefulWidget {
@@ -304,13 +305,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           passController.text,
                           _selectedGender.toString(),
                           birthDateController.text,
-                          '',
+                          ''
                         );
-
-
                           final prefs = await SharedPreferences.getInstance();
                           await prefs.setBool('isLoggedIn', true);
-
                         Navigator.popAndPushNamed(context, '/');
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -323,7 +321,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text("Заполните поля."),
+                          
+                          content: Text(
+                            "Заполните поля.",
+                            style: TextStyle(color: Colors.white,
+                            fontWeight: FontWeight(700)),
+                          ),
                           backgroundColor: Color.fromARGB(156, 27, 12, 34),
                         ),
                       );

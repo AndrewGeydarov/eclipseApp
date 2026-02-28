@@ -1,3 +1,4 @@
+import 'package:eclipse_app/bottom/recovery_password.dart';
 import 'package:eclipse_app/check.dart';
 import 'package:eclipse_app/home.dart';
 import 'package:eclipse_app/registration.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         '/registration': (context) => RegistrationPage(),
         '/home': (context) => HomePage(),
         '/check': (context) => CheckPage(),
+        '/recovery':(context) => RecoveryPasswordPage(),
       },
     );
   }

@@ -24,4 +24,12 @@ class UserTable {
       return;
     }
   }
+
+  Future<void> updateImage(String url, String id_user) async{
+    try {
+      await supabase.client.from('users').update({'avatar': url}).eq('id', id_user);
+    } catch (e) {
+      return;
+    }
+  }
 }
