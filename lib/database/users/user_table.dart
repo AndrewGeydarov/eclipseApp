@@ -18,18 +18,31 @@ class UserTable {
         'password': password,
         'birth_date': date,
         'gender': gender,
-        'avatar': 'https://kpvbppodktqilevinrki.supabase.co/storage/v1/object/public/EclipseBucket/default-avatar.jpeg',
+        'avatar':
+            'https://kpvbppodktqilevinrki.supabase.co/storage/v1/object/public/EclipseBucket/default-avatar.jpeg',
       });
-
-      print('ДОБАВЛЕН ПОЛЬЗОВАТЕЛЬ'); 
     } catch (e) {
       return;
     }
   }
 
-  Future<void> updateImage(String url, String id_user) async{
+  Future<void> updateImage(String url, String id_user) async {
     try {
-      await supabase.client.from('users').update({'avatar': url}).eq('id', id_user);
+      await supabase.client
+          .from('users')
+          .update({'avatar': url})
+          .eq('id', id_user);
+    } catch (e) {
+      return;
+    }
+  }
+
+  Future<void> UpdateFullName(String Name, String user_id) async {
+    try {
+      await supabase.client
+          .from('users')
+          .update({'full_name': Name})
+          .eq('id', user_id);
     } catch (e) {
       return;
     }

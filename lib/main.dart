@@ -10,8 +10,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Supabase.initialize(
-    anonKey: 'sb_publishable_AsfemWt48MAK4Ij5EaLP_Q_68XcfU5a',
-    url: 'https://kpvbppodktqilevinrki.supabase.co',
+    anonKey: '',
+    url: '',
   );
   runApp(const MyApp());
 }

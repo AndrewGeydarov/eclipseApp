@@ -72,6 +72,25 @@ class _BottomProfilePageState extends State<BottomProfilePage> {
     }
   }
 
+  Future<void> updateImage() async {
+    showDialog(
+      context: context,
+      builder: (context) =>
+          Center(child: CircularProgressIndicator(color: Colors.deepPurple)),
+    );
+
+    await uploadImage();
+    await Future.delayed(Duration(seconds: 3));
+    await downloadUrl();
+    await userTable.updateImage(url!, user_id);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Успешное сохранение!"),
+        backgroundColor: Color.fromARGB(156, 27, 12, 34),
+      ),
+    );
+  }
+
   @override
   void initState() {
     getUserById();
@@ -90,9 +109,12 @@ class _BottomProfilePageState extends State<BottomProfilePage> {
                 height: MediaQuery.of(context).size.height * 0.04,
                 alignment: Alignment.centerRight,
                 width: MediaQuery.of(context).size.width * 0.5,
-                child: IconButton(onPressed: () async {
-                  await selectedImageGallery();
-                }, icon: Icon(Icons.edit)),
+                child: IconButton(
+                  onPressed: () async {
+                    await selectedImageGallery();
+                  },
+                  icon: Icon(Icons.edit),
+                ),
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.2,
@@ -111,7 +133,6 @@ class _BottomProfilePageState extends State<BottomProfilePage> {
                 width: MediaQuery.of(context).size.width * 0.9,
                 child: TextField(
                   controller: fullnameController,
-                  // obscureText: true,
                   cursorColor: Colors.white,
                   decoration: InputDecoration(
                     filled: true,
@@ -137,8 +158,8 @@ class _BottomProfilePageState extends State<BottomProfilePage> {
                 width: MediaQuery.of(context).size.width * 0.9,
                 child: TextField(
                   controller: emailController,
-                  // obscureText: true,
                   cursorColor: Colors.white,
+                  enabled: false,
                   decoration: InputDecoration(
                     filled: true,
                     hintText: 'Email',
@@ -147,7 +168,7 @@ class _BottomProfilePageState extends State<BottomProfilePage> {
                       borderRadius: BorderRadius.circular(25),
                       borderSide: BorderSide(color: Colors.white10),
                     ),
-                    enabledBorder: OutlineInputBorder(
+                    disabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(25),
                       borderSide: BorderSide(color: Colors.white10),
                     ),
@@ -158,10 +179,12 @@ class _BottomProfilePageState extends State<BottomProfilePage> {
               Container(
                 alignment: Alignment.centerRight,
                 width: MediaQuery.of(context).size.width * 0.9,
-                child: InkWell(child: Text('Сменить пароль'), onTap: (
-                ) {
-                  Navigator.popAndPushNamed(context, '/recovery');
-                }),
+                child: InkWell(
+                  child: Text('Сменить пароль'),
+                  onTap: () {
+                    Navigator.popAndPushNamed(context, '/recovery');
+                  },
+                ),
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               SizedBox(
@@ -176,25 +199,51 @@ class _BottomProfilePageState extends State<BottomProfilePage> {
                     ),
                   ),
                   onPressed: () async {
-                    showDialog(
-                      context: context,
-                      builder: (context) => Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.deepPurple,
+                    if (_selectFile != null &&
+                        fullnameController.text !=
+                            docs['full_name'].toString()) {
+                      await updateImage();
+                      await userTable.UpdateFullName(
+                        fullnameController.text,
+                        user_id,
+                      );
+
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Успешное сохранение!"),
+                          backgroundColor: Color.fromARGB(156, 27, 12, 34),
                         ),
-                      ),
-                    );
-                    await uploadImage();
-                    await Future.delayed(Duration(seconds: 3));
-                    await downloadUrl();
-                    await userTable.updateImage(url!, user_id);
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("Успешное сохранение!"),
-                        backgroundColor: Color.fromARGB(156, 27, 12, 34),
-                      ),
-                    );
+                      );
+                    } else {
+                      if (_selectFile != null &&
+                          docs['full_name'] == fullnameController.text) {
+                        await updateImage();
+                        Navigator.pop(context);
+                      } else {
+                        if (_selectFile == null &&
+                            fullnameController.text !=
+                                docs['full_name'].toString()) {
+                          await userTable.UpdateFullName(
+                            fullnameController.text,
+                            user_id,
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Успешное сохранение!"),
+                              backgroundColor: Color.fromARGB(156, 27, 12, 34),
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Проверьте правильность"),
+                              backgroundColor: Color.fromARGB(156, 27, 12, 34),
+                            ),
+                          );
+                        }
+                      }
+                    }
                   },
                   child: Text("Сохранить"),
                 ),
