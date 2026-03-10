@@ -111,7 +111,7 @@ class _AuthPageState extends State<AuthPage> {
                 onPressed: () async {
                   if (emailController.text.isNotEmpty &&
                       passController.text.isNotEmpty) {
-                    var user = authService.signIn(
+                    var user = await authService.signIn(
                       emailController.text,
                       passController.text,
                     );

@@ -1,9 +1,13 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
+import 'package:eclipse_app/database/authorize.dart';
 import 'package:eclipse_app/database/storage/storage.dart';
 import 'package:eclipse_app/database/users/user_table.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class BottomProfilePage extends StatefulWidget {
@@ -14,6 +18,7 @@ class BottomProfilePage extends StatefulWidget {
 }
 
 class _BottomProfilePageState extends State<BottomProfilePage> {
+  AuthService authService = AuthService();
   XFile? _file;
   // ignore: unused_field
   File? _selectFile;
@@ -104,7 +109,7 @@ class _BottomProfilePageState extends State<BottomProfilePage> {
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children:[
               Container(
                 height: MediaQuery.of(context).size.height * 0.04,
                 alignment: Alignment.centerRight,
@@ -248,6 +253,23 @@ class _BottomProfilePageState extends State<BottomProfilePage> {
                   child: Text("Сохранить"),
                 ),
               ),
+              SizedBox(width: MediaQuery.of(context).size.height * 0.02),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.8,
+                child: TextButton(
+                  onPressed: () async {
+                    await authService.logOut();
+                    final prefs = await SharedPreferences.getInstance();
+                    await prefs.setBool('isLoggedIn', false);
+                    Navigator.popAndPushNamed(context, '/');
+                  }, 
+                  child: Text(
+                    "Выйти из аккаунта",
+                    style: TextStyle(
+                      color: Colors.red
+                    ),
+                  )),
+              )
             ],
           ),
         ),
