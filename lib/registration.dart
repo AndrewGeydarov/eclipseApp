@@ -43,7 +43,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
               SizedBox(height: MediaQuery.of(context).size.height * 0.05),
               Image.asset('images/logo.png'),
               SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-
               Container(
                 width: MediaQuery.of(context).size.width * 0.9,
                 alignment: Alignment.centerLeft,
@@ -118,9 +117,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   ),
                 ),
               ),
-
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-
               Container(
                 width: MediaQuery.of(context).size.width * 0.9,
                 alignment: Alignment.centerLeft,
@@ -156,9 +153,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   ),
                 ),
               ),
-
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -204,9 +199,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       ),
                     ],
                   ),
-
                   SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -274,9 +267,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   ),
                 ],
               ),
-
               SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.8,
                 child: ElevatedButton(
@@ -341,9 +332,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   ),
                 ),
               ),
-
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

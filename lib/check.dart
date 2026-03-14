@@ -16,6 +16,7 @@ class _CheckPageState extends State<CheckPage> {
   bool _isLoggedIn = false;
   Future<void> _checkAuth() async {
     final prefs = await SharedPreferences.getInstance();
+    // prefs.setBool('isLoggedIn', false);
     final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
 
     setState(() {
