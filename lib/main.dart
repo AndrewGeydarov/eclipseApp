@@ -1,4 +1,5 @@
 import 'package:eclipse_app/bottom/recovery_password.dart';
+import 'package:eclipse_app/bottom/search/movieInfo_page.dart';
 import 'package:eclipse_app/check.dart';
 import 'package:eclipse_app/home.dart';
 import 'package:eclipse_app/registration.dart';

@@ -1,3 +1,6 @@
+import 'package:easy_stars/easy_stars.dart';
+import 'package:eclipse_app/bottom/search/movieInfo_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -12,10 +15,18 @@ class _BottomSearchPageState extends State<BottomSearchPage> {
   TextEditingController searchController = TextEditingController();
   Widget movieTile(BuildContext context, dynamic docs) {
     return ListTile(
-      title: Text(docs['name']),
+      title: Column(
+        children: [
+          Text(docs['name']),
+          EasyStarsRating(
+            initialRating: docs['stars'].toDouble(),
+          ),
+        ],
+      ),
       subtitle: Text(docs['description'], maxLines: 3),
       leading: Image.network(docs['image']),
       trailing: IconButton(onPressed: () {}, icon: Icon(Icons.bookmark)),
+      onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (context) => MovieInfoPage(docs: docs)))
     );
   }
 
@@ -28,7 +39,7 @@ class _BottomSearchPageState extends State<BottomSearchPage> {
           decoration: InputDecoration(
             filled: true,
             hintText: 'Поиск',
-            prefixIcon: IconButton(
+            suffixIcon: IconButton(
               icon: Icon(Icons.search),
               onPressed: () {
                 setState(() {});
@@ -46,27 +57,41 @@ class _BottomSearchPageState extends State<BottomSearchPage> {
           ),
         ),
       ),
-      body: StreamBuilder(
-        stream: Supabase.instance.client
-            .from('movies')
-            .stream(primaryKey: ['id']),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(color: Colors.deepPurple),
-            );
-          }
-          var movie = snapshot.data;
-          if(searchController.text.isNotEmpty){
-            movie = movie!.where((element) => element['name'.toLowerCase().contains(searchController.text.toLowerCase())]).toList();
-          }
-          return ListView.builder(
-            itemCount: movie!.length,
-            itemBuilder: (context, index) {
-              return movieTile(context, movie![index]);
-            },
-          );
-        },
+      body: Column(
+        children: [
+          SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+          Expanded(
+            child: StreamBuilder(
+              stream: Supabase.instance.client
+                  .from('movies')
+                  .stream(primaryKey: ['id']),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(
+                    child: CircularProgressIndicator(color: Colors.deepPurple),
+                  );
+                }
+                var movie = snapshot.data;
+                if (searchController.text.isNotEmpty) {
+                  movie = movie!
+                      .where(
+                        (element) =>
+                            element['name'.toLowerCase().contains(
+                              searchController.text.toLowerCase(),
+                            )],
+                      )
+                      .toList();
+                }
+                return ListView.builder(
+                  itemCount: movie!.length,
+                  itemBuilder: (context, index) {
+                    return movieTile(context, movie![index]);
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
